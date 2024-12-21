@@ -1,18 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Karaktersnitt",
+  "name": "StudentWeb GPA Kalkulator",
   "version": "1.0",
-  "description": "Regn ut karaktersnitt",
+  "description": "Beregn karaktersnitt fra StudentWeb",
   "permissions": ["activeTab"],
-  "host_permissions": ["https://fsweb.no/studentweb/resultater.jsf"],
   "content_scripts": [
     {
-      "matches": ["https://fsweb.no/studentweb/resultater.jsf"],
-      "js": ["script.js"],
-      "css": ["styles.css"]
+      "matches": ["*://*.fsweb.no/studentweb/*"],
+      "css": ["styles.css"],
+      "js": ["content.js"]
     }
-  ],
-  "action": {
-    "default_title": "Karaktersnitt"
-  }
+  ]
 }
