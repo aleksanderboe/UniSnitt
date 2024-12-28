@@ -6,7 +6,7 @@
   "permissions": ["activeTab"],
   "content_scripts": [
     {
-      "matches": ["*://*.fsweb.no/studentweb/*"],
+      "matches": ["*://*.fsweb.no/studentweb/resultater.jsf"],
       "css": ["styles.css"],
       "js": ["content.js"]
     }
