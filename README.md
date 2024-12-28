@@ -1,4 +1,6 @@
-Chrome extension to calculate GPA from studentweb
+## Chrome extension to calculate GPA from studentweb
+
+![Faen](https://imgur.com/osc3eE4.jpg)
 
 # Installation
 ```
