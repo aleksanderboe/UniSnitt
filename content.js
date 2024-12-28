@@ -44,8 +44,8 @@ function calculateGPA() {
     });
 
     const gpaValue = totalCredits > 0 ? totalPoints / totalCredits : 0;
-    const roundedGPA = Math.round(gpaValue);
-    const letterGrade = getLetterGrade(gpaValue);
+    const roundedGPA = Math.round((gpaValue + 2.5) / 10) * 10;
+    const letterGrade = getLetterGrade(roundedGPA);
 
     document.getElementById("gpa-result").textContent = letterGrade;
     document.getElementById(
