@@ -26,14 +26,25 @@ function calculateGPA() {
       try {
         const gradeElement = row.querySelector(".col6Resultat .infoLinje span");
         const creditsElement = row.querySelector(".col7Studiepoeng span");
+        const gradeSelect = row.querySelector(".grade-edit-select");
 
-        if (gradeElement && creditsElement) {
-          const grade = gradeElement.textContent.trim().toUpperCase();
+        if (
+          gradeElement &&
+          creditsElement &&
+          creditsElement.textContent.trim()
+        ) {
+          const originalGrade = gradeElement.textContent.trim().toUpperCase();
+          const grade = gradeSelect ? gradeSelect.value : originalGrade;
           const credits = parseFloat(
             creditsElement.textContent.trim().replace(",", ".")
           );
 
-          if (!isNaN(credits) && credits > 0 && grade in gradePoints) {
+          if (
+            !isNaN(credits) &&
+            credits > 0 &&
+            grade in gradePoints &&
+            originalGrade in gradePoints
+          ) {
             totalPoints += gradePoints[grade] * credits;
             totalCredits += credits;
           }
@@ -44,7 +55,7 @@ function calculateGPA() {
     });
 
     const gpaValue = totalCredits > 0 ? totalPoints / totalCredits : 0;
-    const roundedGPA = Math.round((gpaValue + 2.5) / 10) * 10;
+    const roundedGPA = Math.round(gpaValue / 10) * 10;
     const letterGrade = getLetterGrade(roundedGPA);
 
     document.getElementById("gpa-result").textContent = letterGrade;
@@ -54,10 +65,39 @@ function calculateGPA() {
       2
     )} ≈ ${roundedGPA}`;
   } catch (error) {
-    document.getElementById("gpa-result").textContent = "Error";
-    document.getElementById("gpa-calculation").textContent =
-      "Kunne ikke beregne snitt";
+    console.error(error);
   }
+}
+
+function makeGradesEditable() {
+  const rows = document.querySelectorAll("table.table-standard > tbody > tr");
+  const validGrades = ["A", "B", "C", "D", "E"];
+
+  rows.forEach((row) => {
+    const gradeElement = row.querySelector(".col6Resultat .infoLinje span");
+    const creditsElement = row.querySelector(".col7Studiepoeng span");
+
+    if (gradeElement && creditsElement && creditsElement.textContent.trim()) {
+      const originalGrade = gradeElement.textContent.trim().toUpperCase();
+
+      if (originalGrade in gradePoints) {
+        const select = document.createElement("select");
+        select.className = "grade-edit-select";
+        select.style.marginLeft = "10px";
+        select.style.padding = "2px";
+
+        validGrades.forEach((grade) => {
+          const option = document.createElement("option");
+          option.value = grade;
+          option.text = grade;
+          option.selected = grade === originalGrade;
+          select.appendChild(option);
+        });
+
+        gradeElement.parentNode.appendChild(select);
+      }
+    }
+  });
 }
 
 function initializeCalculator() {
@@ -95,9 +135,15 @@ function initializeCalculator() {
 
   document.body.appendChild(container);
 
+  makeGradesEditable();
+
   document
     .getElementById("calculate-gpa-btn")
     .addEventListener("click", calculateGPA);
+
+  document.querySelectorAll(".grade-edit-select").forEach((input) => {
+    input.addEventListener("input", calculateGPA);
+  });
 }
 
 if (document.readyState === "loading") {
