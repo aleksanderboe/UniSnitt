@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "StudentWeb GPA Kalkulator",
+  "name": "Unisnitt",
   "version": "1.0",
   "description": "Beregn karaktersnitt fra StudentWeb",
   "permissions": ["activeTab"],
